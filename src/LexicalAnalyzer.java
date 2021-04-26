@@ -2,27 +2,16 @@ import java.util.*;
 import java.util.regex.*;
 
 public class LexicalAnalyzer {
-    private String inputStream;
-    boolean b;
+    private final Pattern regex = Pattern.compile("\\d+|[.*^+-]");
 
-    public LexicalAnalyzer(String inputStream) {
-        this.inputStream = inputStream;
+    public List<String> scanInputStream(String inputStream) {
+        List<String> resultList = new ArrayList<String>();
+        Matcher regexMatcher = regex.matcher(inputStream);
 
-        Pattern p = Pattern.compile(".s");
-        Matcher m = p.matcher(inputStream);
-//        b = m.matches();
+        while (regexMatcher.find()) {
+            resultList.add(regexMatcher.group(0));
+        }
 
-//        List<String> resultList = new ArrayList<String>();
-//        Pattern regex = Pattern.compile("<[^<>]*>");
-//        Matcher regexMatcher = regex.matcher(subjectString);
-//        int lastIndex = 0;
-//        while (regexMatcher.find()) {
-//            resultList.add(subjectString.substring(lastIndex);
-//        }
-    }
-
-    public String getOutput() {
-        System.out.println(b);
-        return "wahala for who no sabi java";
+        return resultList;
     }
 }
