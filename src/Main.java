@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,5 +17,9 @@ public class Main {
         System.out.println("\nOutput of Lexical Analysis for " + "-1.764 * 10^-4" + ":\n" + lex.scanInputStream("-1.764 * 10^-4").toString());
 
         System.out.println("\nOutput of Lexical Analysis for " + "+7.999 * 10^3" + ":\n" + lex.scanInputStream("+7.999 * 10^3").toString());
+
+        ShiftReduceParser shiftReduceParser = new ShiftReduceParser();
+
+        shiftReduceParser.parse(lex.scanInputStream("-1.764 * 10^-4"));
     }
 }

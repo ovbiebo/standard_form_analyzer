@@ -2,38 +2,42 @@ import models.enums.ShiftActions;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Stack;
+import java.util.regex.Pattern;
 
 public class ShiftReduceParser {
-    private final HashMap<String, String> grammar;
-    private final Stack<String> stack;
+    private String stack;
 
-    public ShiftReduceParser(HashMap<String, String> grammar) {
-        this.grammar = grammar;
-        this.stack = new Stack<>();
-        this.stack.add("$");
+    public ShiftReduceParser() {
+        this.stack = "$";
     }
 
     public ShiftActions parse(List<String> tokens) {
+        System.out.printf("%25s|%25s|%25s\n", "Stack", "Input", "Action");
         for (String token : tokens) {
-//            // if token is in grammar reduce
-//            if (grammar.containsKey(token)) {
-//                // reduce
-//                stack.push(token);
-//                reduce();
-//            } else {
-//                // shift
-//                stack.push(token);
-//            }
-            stack.push(token);
-            if (grammar.containsKey(token)) {
-                reduce(token);
-            }
+            stack = stack + token;
+            System.out.printf("%25s|%25s|%25s\n", stack, "Input", "Shift");
+            reduce();
         }
         return ShiftActions.ERROR;
     }
 
-    private void reduce(String token) {
+    private void reduce() {
 
+        Pattern digitRegex = Pattern.compile("(\\d+)");
+        Pattern termRegex = Pattern.compile("-T|\\+T|D|T\\.D");
+        Pattern sdRegex = Pattern.compile("T\\*10\\^T");
+        if (digitRegex.matcher(stack).find()) {
+            stack = stack.replaceFirst(digitRegex.pattern(), "D");
+//            if ()
+            System.out.printf("%25s|%25s|%25s\n", stack, "Input", "Reduce");
+        }
+        if (termRegex.matcher(stack).find()) {
+            stack = stack.replaceFirst(termRegex.pattern(), "T");
+            System.out.printf("%25s|%25s|%25s\n", stack, "Input", "Reduce");
+        }
+        if (sdRegex.matcher(stack).find()) {
+            stack = stack.replaceFirst(sdRegex.pattern(), "S");
+            System.out.printf("%25s|%25s|%25s\n", stack, "Input", "Reduce");
+        }
     }
 }
