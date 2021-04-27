@@ -7,11 +7,8 @@ import java.util.regex.Pattern;
 public class ShiftReduceParser {
     private String stack;
 
-    public ShiftReduceParser() {
-        this.stack = "$";
-    }
-
     public ShiftActions parse(List<String> tokens) {
+        stack = "$";
         System.out.printf("%25s|%25s|%25s\n", "Stack", "Input", "Action");
         for (String token : tokens) {
             stack = stack + token;
@@ -22,7 +19,6 @@ public class ShiftReduceParser {
     }
 
     private void reduce() {
-
         Pattern digitRegex = Pattern.compile("(\\d+)");
         Pattern termRegex = Pattern.compile("-T|\\+T|D|T\\.D");
         Pattern sdRegex = Pattern.compile("T\\*10\\^T");
