@@ -11,9 +11,7 @@ public class ShiftReduceParser {
     }
 
     public ShiftActions parse(List<String> tokens) {
-
         System.out.printf("%25s|%25s|%25s\n", "Stack", "Input", "Action");
-//        System.out.printf("%25s|%25s|%25s\n", stack, input, "Shift");
         for (int i = 0; i < tokens.size(); i++) {
             stack = stack + tokens.get(i);
             System.out.printf("%25s|%25s|%25s\n", stack, String.join("", tokens.subList(i + 1, tokens.size())) + "$", "Shift");
