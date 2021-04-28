@@ -16,7 +16,7 @@ public class ShiftReduceParser {
             stack = stack + tokens.get(i);
             Pattern grammarRegex = Pattern.compile("\\d+|-T|\\+T|N|T\\.N|T\\*10\\^T");
             while (grammarRegex.matcher(stack).find()) {
-                reduce(tokens.subList(i, tokens.size()).toString());
+                reduce(tokens.subList(i+1, tokens.size()).toString());
             }
         }
         if (stack.equals("$S")) {
