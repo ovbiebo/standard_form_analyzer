@@ -8,18 +8,19 @@ public class ShiftReduceParser {
 
     public ShiftActions parse(List<String> tokens) {
         stack = "$";
+        tokens.add("$");
 
-        System.out.printf("%30s|%30s|%30s\n", "Stack", "Input", "Action");
-        System.out.printf("%30s|%30s|%30s\n", stack, String.join("", tokens) + "$", "");
+        System.out.printf("%20s|%35s|%20s\n", "Stack", "Input", "Action");
+        System.out.printf("%20s|%35s|%20s\n", stack, tokens, "");
         for (int i = 0; i < tokens.size(); i++) {
             stack = stack + tokens.get(i);
-            System.out.printf("%30s|%30s|%30s\n", stack, String.join("", tokens.subList(i + 1, tokens.size())) + "$", "Shift");
+            System.out.printf("%20s|%35s|%20s\n", stack, tokens.subList(i + 1, tokens.size()), "Shift");
             Pattern grammarRegex = Pattern.compile("\\d+|-T|\\+T|N|T\\.N|T\\*10\\^T");
             while (grammarRegex.matcher(stack).find()) {
-                reduce(String.join("", tokens.subList(i + 1, tokens.size())) + "$");
+                reduce(tokens.subList(i + 1, tokens.size()).toString());
             }
         }
-        if (stack.equals("$S"))
+        if (stack.equals("$S$"))
             return  ShiftActions.ACCEPT;
         return ShiftActions.ERROR;
     }
@@ -30,15 +31,15 @@ public class ShiftReduceParser {
         Pattern sdRegex = Pattern.compile("T\\*T\\^T");
         if (numberRegex.matcher(stack).find()) {
             stack = stack.replaceFirst(numberRegex.pattern(), "N");
-            System.out.printf("%30s|%30s|%30s\n", stack, input, "Reduce");
+            System.out.printf("%20s|%35s|%20s\n", stack, input, "Reduce");
         }
         if (termRegex.matcher(stack).find()) {
             stack = stack.replaceFirst(termRegex.pattern(), "T");
-            System.out.printf("%30s|%30s|%30s\n", stack, input, "Reduce");
+            System.out.printf("%20s|%35s|%20s\n", stack, input, "Reduce");
         }
         if (sdRegex.matcher(stack).find()) {
             stack = stack.replaceFirst(sdRegex.pattern(), "S");
-            System.out.printf("%30s|%30s|%30s\n", stack, input, "Reduce");
+            System.out.printf("%20s|%35s|%20s\n", stack, input, "Reduce");
         }
     }
 }
