@@ -25,7 +25,7 @@ public class Main {
                 try {
                     inputStream = "-1.764 * 10^-4";
                     analyze(inputStream, lex, shiftReduceParser);
-                    inputStream = "+7.999 * 10^36577799";
+                    inputStream = "+7.999 * 10^3";
                     analyze(inputStream, lex, shiftReduceParser);
                 } catch (Error error) {
                     System.out.println(error.getMessage());
