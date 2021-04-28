@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -21,7 +19,7 @@ public class Main {
             System.out.println(lexOutput.toString());
 
             System.out.println("\nOutput of Syntax Analysis for " + inputStream + ":");
-            shiftReduceParser.parse(lexOutput);
+            System.out.println(shiftReduceParser.parse(lexOutput));
         } catch (Error error) {
             System.out.println(error.getMessage());
         }
@@ -34,7 +32,7 @@ public class Main {
             System.out.println(lexOutput.toString());
 
             System.out.println("\nOutput of Syntax Analysis for " + inputStream + ":");
-            shiftReduceParser.parse(lexOutput);
+            System.out.println(shiftReduceParser.parse(lexOutput));
         } catch (Error error) {
             System.out.println(error.getMessage());
         }
