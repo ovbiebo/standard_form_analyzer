@@ -8,20 +8,24 @@ public class ShiftReduceParser {
 
     public ShiftActions parse(List<String> tokens) {
         stack = "$";
-        tokens.add("$");
+        List<String> input = tokens;
+        input.add("$");
 
         System.out.printf("%20s|%35s|%20s\n", "Stack", "Input", "Action");
-        System.out.printf("%20s|%35s|%20s\n", stack, tokens, "");
-        for (int i = 0; i < tokens.size(); i++) {
+        for (int i = 0; i < tokens.size() - 1; i++) {
+            input = tokens.subList(i + 1, tokens.size());
+            System.out.printf("%20s|%35s|%20s\n", stack, input, "Shift");
             stack = stack + tokens.get(i);
-            System.out.printf("%20s|%35s|%20s\n", stack, tokens.subList(i + 1, tokens.size()), "Shift");
             Pattern grammarRegex = Pattern.compile("\\d+|-T|\\+T|N|T\\.N|T\\*10\\^T");
             while (grammarRegex.matcher(stack).find()) {
-                reduce(tokens.subList(i + 1, tokens.size()).toString());
+                reduce(input.toString());
             }
         }
-        if (stack.equals("$S$"))
-            return  ShiftActions.ACCEPT;
+        if (stack.equals("$S")) {
+            System.out.printf("%20s|%35s|%20s\n", stack, input, ShiftActions.ACCEPT);
+            return ShiftActions.ACCEPT;
+        }
+        System.out.printf("%20s|%35s|%20s\n", stack, input, ShiftActions.ERROR);
         return ShiftActions.ERROR;
     }
 
@@ -30,16 +34,16 @@ public class ShiftReduceParser {
         Pattern termRegex = Pattern.compile("-T|\\+T|N");
         Pattern sdRegex = Pattern.compile("T\\*T\\^T");
         if (numberRegex.matcher(stack).find()) {
-            stack = stack.replaceFirst(numberRegex.pattern(), "N");
             System.out.printf("%20s|%35s|%20s\n", stack, input, "Reduce");
+            stack = stack.replaceFirst(numberRegex.pattern(), "N");
         }
         if (termRegex.matcher(stack).find()) {
-            stack = stack.replaceFirst(termRegex.pattern(), "T");
             System.out.printf("%20s|%35s|%20s\n", stack, input, "Reduce");
+            stack = stack.replaceFirst(termRegex.pattern(), "T");
         }
         if (sdRegex.matcher(stack).find()) {
-            stack = stack.replaceFirst(sdRegex.pattern(), "S");
             System.out.printf("%20s|%35s|%20s\n", stack, input, "Reduce");
+            stack = stack.replaceFirst(sdRegex.pattern(), "S");
         }
     }
 }
